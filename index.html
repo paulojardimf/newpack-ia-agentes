@@ -32,7 +32,8 @@
     .layout { display: grid; grid-template-columns: 280px minmax(0,1fr); gap: 56px; max-width: 1400px; margin: 0 auto; padding: 0 28px; }
     .sidebar { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; padding: 28px 16px 28px 0; border-right: 1px solid var(--line); font-size: .88rem; }
     .brand-mini { display: flex; align-items: center; gap: 10px; padding-bottom: 18px; margin-bottom: 16px; border-bottom: 1px solid var(--line); font-weight: 700; letter-spacing: .04em; font-size: .78rem; text-transform: uppercase; }
-    .mark { width: 30px; height: 30px; border-radius: 7px; background:#fff; color:#000; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.78rem; }
+    .mark { width: 30px; height: 30px; border-radius: 7px; background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .mark img { width: 100%; height: 100%; object-fit: cover; display:block; }
     .toc { list-style: none; padding: 0; margin: 0; }
     .toc li { padding: 2px 0; }
     .toc a { display: block; padding: 8px 12px; color: var(--muted); text-decoration: none; border-left: 2px solid transparent; border-radius: 0 2px 2px 0; transition: all .15s ease; }
@@ -51,7 +52,8 @@
     .eyebrow { text-transform: uppercase; letter-spacing: .18em; font-size: .74rem; color: var(--muted); font-weight: 600; margin-bottom: 12px; }
     .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 0 42px; }
     .top { display: flex; align-items: center; gap: 16px; }
-    .logo-mark { width: 58px; height: 58px; border-radius: 8px; background: #fff; color:#000; display:flex; align-items:center; justify-content:center; font-weight:800; letter-spacing:-.08em; }
+    .logo-mark { width: 58px; height: 58px; border-radius: 8px; background: #fff; display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; }
+    .logo-mark img { width:100%; height:100%; object-fit:cover; display:block; }
     .brand { font-weight: 700; letter-spacing: .04em; }
     .brand small { display: block; color: var(--muted); font-weight: 400; letter-spacing: 0; font-size: .8rem; text-transform: uppercase; }
     .title-lockup { max-width: 1100px; }
@@ -92,12 +94,18 @@
     .flow .idx { width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--fg); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .84rem; }
     .price { font-size: clamp(2.4rem, 4vw, 4.4rem); font-weight: 800; line-height:1; letter-spacing:-.05em; }
     .price-sub { color: var(--muted); margin-top: 10px; }
+    .authority-layout { display:grid; grid-template-columns:minmax(280px,.95fr) minmax(320px,1.05fr); gap:24px; align-items:start; }
+    .photo-card { background: var(--soft); border:1px solid var(--line); border-radius:4px; overflow:hidden; }
+    .photo-card img { width:100%; display:block; }
+    .photo-card .cap { padding:14px 16px; color:var(--muted); font-size:.86rem; border-top:1px solid var(--line); }
+    .profile-links a { display:inline-block; padding:10px 14px; border:1px solid var(--line); border-radius:999px; color:var(--fg); text-decoration:none; font-size:.84rem; }
     footer { padding: 54px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .84rem; }
     @media (max-width: 980px) {
       .layout { grid-template-columns: 1fr; gap: 0; padding: 0 18px; }
       .sidebar { display: none; }
       .mobile-nav { display: block; }
       .meta { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .authority-layout { grid-template-columns:1fr; }
       section { padding: 56px 0; }
       .cover { min-height: auto; padding-top: 34px; }
     }
@@ -111,7 +119,7 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <div class="brand-mini"><div class="mark">PJ</div><span>NewPack · Proposta</span></div>
+    <div class="brand-mini"><div class="mark"><img src="assets/logo-paulo-jardim.png" alt="Logo Paulo Jardim"></div><span>NewPack · Proposta</span></div>
     <ol class="toc" id="toc">
       <li><a href="#sec-cover">00 · Visão geral</a></li>
       <li><a href="#sec-contexto">01 · Contexto</a></li>
@@ -133,7 +141,7 @@
     </nav>
 
     <section id="sec-cover" class="cover">
-      <div class="top"><div class="logo-mark">PJ</div><div class="brand">PAULO JARDIM<small>SeuTimeIA · Proposta executiva</small></div></div>
+      <div class="top"><div class="logo-mark"><img src="assets/logo-paulo-jardim.png" alt="Logo Paulo Jardim"></div><div class="brand">PAULO JARDIM<small>SeuTimeIA · Proposta executiva</small></div></div>
       <div class="title-lockup">
         <div class="eyebrow">Programa para operação industrial</div>
         <h1 class="program-title">IA Aplicada e Implantação de Agentes</h1>
@@ -253,20 +261,32 @@
 
     <section id="sec-case">
       <div class="eyebrow">07 · Referências práticas</div>
-      <h2>Metodologia validada em workshop e implantação real</h2>
-      <div class="grid2">
+      <h2>O que experiências anteriores ajudam a demonstrar</h2>
+      <div class="callout good">Quando a jornada é bem conduzida, a empresa deixa de tratar IA como curiosidade e passa a gerar capacidade interna, linguagem comum e pipeline de oportunidades reais.</div>
+      <div class="tiles">
+        <div class="tile"><div class="k">Estrutura</div><div class="v">2 etapas distintas</div><div class="f">Uma com time tático-operacional e outra com time de liderança, reforçando públicos separados quando o contexto pede.</div></div>
+        <div class="tile"><div class="k">Mobilização</div><div class="v">+ de 30 dias</div><div class="f">Tempo suficiente para conversão do workshop em discussão interna aplicada.</div></div>
+        <div class="tile"><div class="k">Resultado</div><div class="v">~200 ideias</div><div class="f">Volume relevante de iniciativas captadas após o trabalho conduzido.</div></div>
+        <div class="tile"><div class="k">Aprendizado</div><div class="v">Públicos separados</div><div class="f">Mais aderência, mais profundidade e melhor conversão em ação.</div></div>
+      </div>
+      <div class="grid2" style="margin-top:28px;">
         <div class="card">
-          <span class="badge good">Programa corporativo</span>
-          <h3>Grupo HP / Maas</h3>
-          <p>A estrutura de proposta segue o padrão de programa corporativo já utilizado com o Grupo HP/Maas: contexto, metodologia, trilhas, oportunidades, resultados esperados, premissas e próximos passos.</p>
+          <span class="badge good">Workshop in-company</span>
+          <h3 style="font-size:2.1rem; margin-bottom:12px;">Grupo Marajó</h3>
+          <p style="font-size:1.06rem;">Rede de postos líder do segmento de postos de rodovia, com mais de 30 unidades em todo o Brasil.</p>
+          <ul class="clean" style="margin-top:18px;">
+            <li><span>Objeção comum tratada na prática: resistência interna à adoção.</span></li>
+            <li><span>Resposta observada no campo: engajamento do próprio time e defesa espontânea da aplicação.</span></li>
+            <li><span>Demonstração concreta de que adesão depende mais de condução, contexto e aplicação do que de discurso.</span></li>
+          </ul>
         </div>
         <div class="card">
           <span class="badge blue">Implantação real</span>
-          <h3>GSN Advogados</h3>
-          <p>Case derivado do Workshop SeuTimeIA Agentes: agente Hermes em ambiente isolado, VPS própria, Discord, segundo cérebro em GitHub, governança por papéis, Google Workspace, Drive, ClickUp e uso real sobre documentos e rotinas jurídicas.</p>
+          <h3 style="font-size:2.1rem; margin-bottom:12px;">GSN Advogados</h3>
+          <p>Case derivado do Workshop SeuTimeIA Agentes: Hermes implantado em VPS própria, Discord como canal, segundo cérebro em GitHub, governança por papéis, Google Workspace, Drive, ClickUp e uso real sobre documentos e rotinas jurídicas.</p>
+          <p>A leitura para a NewPack é direta: o workshop reduz a curva de explicação e a implantação posterior começa mais próxima dos processos reais.</p>
         </div>
       </div>
-      <div class="callout good">A leitura para a NewPack é direta: o workshop reduz a curva de explicação, e a implantação posterior começa mais próxima dos processos reais.</div>
     </section>
 
     <section id="sec-investimento">
@@ -294,21 +314,25 @@
 
     <section id="sec-paulo">
       <div class="eyebrow">09 · Paulo Jardim</div>
-      <h2>Experiência executiva, operação e aplicação prática de IA</h2>
-      <div class="grid2">
-        <div class="card">
-          <p><b>Paulo Jardim</b> conecta experiência em indústria, gestão, reestruturação e IA aplicada para ajudar empresas a transformar tecnologia em capacidade operacional real.</p>
-          <ul class="clean">
-            <li><span>Engenheiro pela UFG e formação em Gestão de Negócios pela FDC.</span></li>
-            <li><span>Experiência em Ambev, Unilever e Votorantim.</span></li>
-            <li><span>Atuação como CEO interino em reestruturações com mais de 100 colaboradores.</span></li>
-            <li><span>Criador do SeuTimeIA, mentor executivo e consultor estratégico de IA.</span></li>
-          </ul>
+      <h2>Autoridade executiva, leitura prática de operação e aplicação de IA</h2>
+      <div class="authority-layout">
+        <div>
+          <div class="photo-card">
+            <img src="assets/imersoes-seutimeia-collage.png" alt="Exemplos de imersões presenciais conduzidas por Paulo Jardim">
+            <div class="cap">Exemplos de imersões presenciais conduzidas por Paulo Jardim em diferentes contextos empresariais.</div>
+          </div>
+          <div class="profile-links" style="margin-top:14px;">
+            <a href="https://br.linkedin.com/in/paulojardim" target="_blank" rel="noopener">LinkedIn Paulo Jardim</a>
+          </div>
         </div>
-        <div class="card">
-          <span class="badge good">Diferencial</span>
-          <h3>Não é uma conversa de ferramenta</h3>
-          <p>A abordagem parte de problemas reais de operação, processos, pessoas e decisão. A tecnologia entra como meio para aumentar execução, padronização e aprendizagem institucional.</p>
+        <div>
+          <p><b>Paulo Jardim</b> conecta indústria, gestão e IA com uma abordagem prática para empresas que precisam transformar tema em execução.</p>
+          <div class="cards" style="margin-top:22px;">
+            <div class="card"><h3>Experiências</h3><p>Ex-<b>Ambev</b>, Unilever e Votorantim. Atuação em ambientes de escala, processos complexos e excelência operacional.</p></div>
+            <div class="card"><h3>Reestruturação</h3><p><b>CEO interino</b> em reestruturações com <b>+100 colaboradores</b>, com leitura de operação, gestão e ritmo de execução.</p></div>
+            <div class="card"><h3>Negócios atuais</h3><p>Criador do <b>SeuTimeIA</b> · <b>Consultor Estratégico de IA</b> · <b>Mentor Executivo de IA</b>.</p></div>
+            <div class="card"><h3>Formação</h3><p><b>Engenheiro (UFG)</b> e <b>Gestão de Negócios (FDC)</b>.</p></div>
+          </div>
         </div>
       </div>
     </section>
