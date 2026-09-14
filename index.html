@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programa de IA Aplicada e Implantação de Agentes — NewPack</title>
+  <meta name="description" content="Proposta executiva para workshop SeuTimeIA e implantação inicial de agentes Hermes na NewPack.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000;
+      --fg: #fff;
+      --muted: #a3a3a3;
+      --line: #1f1f1f;
+      --soft: #141414;
+      --soft-2: #0d0d0d;
+      --good: #79c97a;
+      --warn: #f4b400;
+      --blue: #8eb7ff;
+      --gold: #ffd84d;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; background: var(--bg); color: var(--fg);
+      font-family: "Montserrat", -apple-system, system-ui, sans-serif;
+      line-height: 1.65; -webkit-font-smoothing: antialiased; scroll-behavior: smooth;
+    }
+    body { overflow-x: hidden; }
+    a { color: inherit; }
+    .layout { display: grid; grid-template-columns: 280px minmax(0,1fr); gap: 56px; max-width: 1400px; margin: 0 auto; padding: 0 28px; }
+    .sidebar { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; padding: 28px 16px 28px 0; border-right: 1px solid var(--line); font-size: .88rem; }
+    .brand-mini { display: flex; align-items: center; gap: 10px; padding-bottom: 18px; margin-bottom: 16px; border-bottom: 1px solid var(--line); font-weight: 700; letter-spacing: .04em; font-size: .78rem; text-transform: uppercase; }
+    .mark { width: 30px; height: 30px; border-radius: 7px; background:#fff; color:#000; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.78rem; }
+    .toc { list-style: none; padding: 0; margin: 0; }
+    .toc li { padding: 2px 0; }
+    .toc a { display: block; padding: 8px 12px; color: var(--muted); text-decoration: none; border-left: 2px solid transparent; border-radius: 0 2px 2px 0; transition: all .15s ease; }
+    .toc a:hover, .toc a.active { color: var(--fg); background: var(--soft); border-left-color: var(--fg); }
+    .mobile-nav { display: none; position: sticky; top: 0; z-index: 30; margin: 0 -18px; padding: 12px 16px; background: rgba(0,0,0,.94); border-bottom: 1px solid var(--line); backdrop-filter: blur(10px); overflow-x: auto; white-space: nowrap; }
+    .mobile-nav a { display: inline-block; color: var(--muted); text-decoration: none; border: 1px solid var(--line); background: var(--soft-2); padding: 8px 12px; border-radius: 999px; font-size: .78rem; margin-right: 8px; }
+    .mobile-nav a.active { color: var(--fg); border-color: var(--fg); }
+    .main { min-width: 0; }
+    section { padding: 74px 0; border-top: 1px solid var(--line); scroll-margin-top: 72px; }
+    section:first-of-type { border-top: none; padding-top: 44px; }
+    h1, h2, h3, h4 { margin: 0 0 22px; line-height: 1.12; letter-spacing: -.02em; }
+    h1 { font-size: clamp(2.6rem, 5vw, 4.8rem); max-width: 1050px; }
+    h2 { font-size: clamp(1.9rem, 3vw, 2.7rem); }
+    h3 { font-size: 1.18rem; }
+    p { margin: 0 0 16px; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .18em; font-size: .74rem; color: var(--muted); font-weight: 600; margin-bottom: 12px; }
+    .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 0 42px; }
+    .top { display: flex; align-items: center; gap: 16px; }
+    .logo-mark { width: 58px; height: 58px; border-radius: 8px; background: #fff; color:#000; display:flex; align-items:center; justify-content:center; font-weight:800; letter-spacing:-.08em; }
+    .brand { font-weight: 700; letter-spacing: .04em; }
+    .brand small { display: block; color: var(--muted); font-weight: 400; letter-spacing: 0; font-size: .8rem; text-transform: uppercase; }
+    .title-lockup { max-width: 1100px; }
+    .program-title { font-size: clamp(2.8rem, 5vw, 5rem); line-height: 1.02; margin-bottom: 10px; }
+    .client-name { font-size: clamp(1.5rem, 2.2vw, 2rem); color: var(--muted); font-weight: 600; margin-bottom: 24px; }
+    .subtitle { color: var(--muted); font-size: 1.1rem; max-width: 980px; }
+    .meta, .tiles, .grid2, .grid3, .cards, .stats { display: grid; gap: 14px; }
+    .meta { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 48px; }
+    .tiles { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-top: 28px; }
+    .grid2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .grid3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .cards { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .stats { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-top: 20px; }
+    .card, .tile, .meta .card, .stat, .step { background: var(--soft); border: 1px solid var(--line); border-radius: 4px; padding: 22px; }
+    .tile .k, .stat .k { color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; margin-bottom: 8px; }
+    .tile .v { font-size: 1.52rem; font-weight: 800; letter-spacing: -.02em; }
+    .tile .f, .stat .f { color: var(--muted); font-size: .88rem; margin-top: 8px; }
+    .stat .v { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; }
+    .meta b { display: block; margin-bottom: 6px; }
+    .meta span { color: var(--muted); font-size: .9rem; }
+    .callout { padding: 20px 24px; background: var(--soft); border: 1px solid var(--line); border-left: 3px solid var(--fg); border-radius: 0 4px 4px 0; margin: 20px 0; }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.good { border-left-color: var(--good); }
+    .callout.blue { border-left-color: var(--blue); }
+    ul.clean { list-style: none; padding: 0; margin: 0; }
+    ul.clean li { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    ul.clean li:last-child { border-bottom: none; }
+    ul.clean li::before { content: "▸"; font-weight: 700; flex-shrink: 0; color: var(--gold); }
+    ul.clean li > span { min-width: 0; display: block; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
+    .badge.good { border-color: var(--good); color: var(--good); }
+    .badge.warn { border-color: var(--warn); color: var(--warn); }
+    .badge.blue { border-color: var(--blue); color: var(--blue); }
+    .quote-line { margin-top: 34px; padding-top: 28px; border-top: 1px solid var(--line); max-width: 980px; }
+    .quote-line p { font-size: 1.25rem; font-weight: 600; line-height: 1.5; }
+    .flow { display: grid; gap: 12px; margin-top: 22px; }
+    .flow .node { display: grid; grid-template-columns: 54px minmax(0,1fr); gap: 16px; padding: 18px 20px; background: var(--soft); border: 1px solid var(--line); border-radius: 4px; align-items: start; }
+    .flow .idx { width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--fg); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .84rem; }
+    .price { font-size: clamp(2.4rem, 4vw, 4.4rem); font-weight: 800; line-height:1; letter-spacing:-.05em; }
+    .price-sub { color: var(--muted); margin-top: 10px; }
+    footer { padding: 54px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .84rem; }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; gap: 0; padding: 0 18px; }
+      .sidebar { display: none; }
+      .mobile-nav { display: block; }
+      .meta { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      section { padding: 56px 0; }
+      .cover { min-height: auto; padding-top: 34px; }
+    }
+    @media (max-width: 640px) {
+      h1, .program-title { font-size: 2.25rem; }
+      .client-name { font-size: 1.2rem; }
+      .meta { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand-mini"><div class="mark">PJ</div><span>NewPack · Proposta</span></div>
+    <ol class="toc" id="toc">
+      <li><a href="#sec-cover">00 · Visão geral</a></li>
+      <li><a href="#sec-contexto">01 · Contexto</a></li>
+      <li><a href="#sec-tese">02 · Tese</a></li>
+      <li><a href="#sec-workshop">03 · Workshop</a></li>
+      <li><a href="#sec-agentes">04 · Agentes</a></li>
+      <li><a href="#sec-oportunidades">05 · Oportunidades</a></li>
+      <li><a href="#sec-integracoes">06 · Integrações</a></li>
+      <li><a href="#sec-case">07 · Referências</a></li>
+      <li><a href="#sec-investimento">08 · Investimento</a></li>
+      <li><a href="#sec-paulo">09 · Paulo Jardim</a></li>
+      <li><a href="#sec-passos">10 · Próximos passos</a></li>
+    </ol>
+  </aside>
+
+  <main class="main">
+    <nav class="mobile-nav" id="mobile-nav">
+      <a href="#sec-cover">Visão</a><a href="#sec-workshop">Workshop</a><a href="#sec-agentes">Agentes</a><a href="#sec-investimento">Investimento</a><a href="#sec-paulo">Paulo</a><a href="#sec-passos">Próximos</a>
+    </nav>
+
+    <section id="sec-cover" class="cover">
+      <div class="top"><div class="logo-mark">PJ</div><div class="brand">PAULO JARDIM<small>SeuTimeIA · Proposta executiva</small></div></div>
+      <div class="title-lockup">
+        <div class="eyebrow">Programa para operação industrial</div>
+        <h1 class="program-title">IA Aplicada e Implantação de Agentes</h1>
+        <div class="client-name">NewPack Soluções Industriais</div>
+        <p class="subtitle">Workshop presencial de 6 horas para alinhamento prático do time, conectado a um projeto opcional de implantação inicial de agentes em ambiente próprio da NewPack.</p>
+      </div>
+      <div class="meta">
+        <div class="card"><b>Público estimado</b><span>25 a 30 pessoas das áreas administrativa, comercial, projetos, RH, controladoria, suprimentos e liderança.</span></div>
+        <div class="card"><b>Sistemas centrais</b><span>Sienge como ERP da operação e RD Station como apoio ao comercial.</span></div>
+        <div class="card"><b>Dor visível</b><span>crescimento, orçamento pressionado, comunicação dispersa, falhas de suprimentos e dados pouco acionáveis.</span></div>
+        <div class="card"><b>Caminho proposto</b><span>capacitação prática + implantação de agentes com governança e uso real.</span></div>
+      </div>
+      <div class="quote-line"><p>O objetivo não é adicionar mais uma ferramenta. É transformar conhecimento operacional em capacidade replicável dentro da rotina da NewPack.</p></div>
+    </section>
+
+    <section id="sec-contexto">
+      <div class="eyebrow">01 · Contexto entendido</div>
+      <h2>A NewPack está crescendo mais rápido do que seus processos conseguem absorver com padrão</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>Operação técnica e complexa</h3>
+          <p>A empresa atua em obras industriais de alta complexidade, especialmente em ambientes farmacêuticos, biológicos e biotecnológicos, com eletromecânica, automação, utilidades, montagem de equipamentos e execução em diferentes regiões do Brasil.</p>
+        </div>
+        <div class="card">
+          <h3>Gargalos de escala</h3>
+          <p>O crescimento trouxe pressão sobre orçamento, suprimentos, gestão de obras, controladoria, RH e comunicação interna. Parte relevante da operação ainda depende de conhecimento tácito dos sócios e líderes.</p>
+        </div>
+      </div>
+      <div class="tiles">
+        <div class="tile"><div class="k">Comunicação</div><div class="v">+30 grupos</div><div class="f">WhatsApp resolve urgência, mas não cria governança operacional.</div></div>
+        <div class="tile"><div class="k">Comercial</div><div class="v">alta demanda</div><div class="f">o volume passivo já limita busca ativa e velocidade de resposta.</div></div>
+        <div class="tile"><div class="k">ERP</div><div class="v">Sienge</div><div class="f">base natural para obras, planejamento, custos, orçamento e diário.</div></div>
+        <div class="tile"><div class="k">CRM</div><div class="v">RD Station</div><div class="f">base possível para oportunidades, negociações e eventos comerciais.</div></div>
+      </div>
+    </section>
+
+    <section id="sec-tese">
+      <div class="eyebrow">02 · Tese do programa</div>
+      <h2>Workshop sozinho informa. Agentes bem implantados mudam a operação.</h2>
+      <div class="callout good">A recomendação é iniciar com um workshop prático de 6 horas e, a partir dele, priorizar os primeiros agentes para implantação assistida em 3 meses.</div>
+      <div class="grid3">
+        <div class="card"><span class="badge good">1</span><h3>Alinhamento</h3><p>O workshop cria linguagem comum, reduz resistência e mostra a diferença entre usar IA isolada e operar com agentes.</p></div>
+        <div class="card"><span class="badge blue">2</span><h3>Diagnóstico aplicado</h3><p>A própria dinâmica do encontro levanta gargalos, retrabalhos e oportunidades por área.</p></div>
+        <div class="card"><span class="badge warn">3</span><h3>Implantação</h3><p>O projeto posterior transforma os casos priorizados em agentes, skills, canais, rotinas e primeiras integrações.</p></div>
+      </div>
+    </section>
+
+    <section id="sec-workshop">
+      <div class="eyebrow">03 · Workshop inicial</div>
+      <h2>Workshop SeuTimeIA — IA Aplicada à Operação NewPack</h2>
+      <div class="stats">
+        <div class="stat"><div class="k">Carga</div><div class="v">6h</div><div class="f">presenciais em Anápolis</div></div>
+        <div class="stat"><div class="k">Participantes</div><div class="v">25–30</div><div class="f">grupo administrativo e lideranças-chave</div></div>
+        <div class="stat"><div class="k">Formato</div><div class="v">prático</div><div class="f">exemplos, exercícios, diagnóstico e priorização</div></div>
+        <div class="stat"><div class="k">Saída</div><div class="v">casos</div><div class="f">2 ou 3 agentes iniciais sugeridos</div></div>
+      </div>
+      <div class="flow">
+        <div class="node"><div class="idx">1</div><div><h3>IA como extensão do time</h3><p>O que muda quando a IA deixa de ser conversa individual e passa a apoiar rotinas, decisões e execução.</p></div></div>
+        <div class="node"><div class="idx">2</div><div><h3>Aplicações por área</h3><p>Orçamento, comercial, suprimentos, obras, RDO, controladoria, RH e projetos.</p></div></div>
+        <div class="node"><div class="idx">3</div><div><h3>Pesquisa diagnóstica</h3><p>Levantamento de gargalos, retrabalhos, tarefas repetitivas e dependências de pessoas-chave.</p></div></div>
+        <div class="node"><div class="idx">4</div><div><h3>Demonstração de agentes</h3><p>Como agentes operam em canais internos, com contexto, skills, permissões, histórico e ferramentas.</p></div></div>
+        <div class="node"><div class="idx">5</div><div><h3>Priorização</h3><p>Escolha dos casos com maior aderência para um primeiro ciclo de implantação.</p></div></div>
+      </div>
+      <div class="callout warn">A NewPack define local, estrutura, internet, projetor/tela, organização da agenda e coffee break. Sempre que possível, recomenda-se ambiente com menos interrupções do que a rotina normal de trabalho.</div>
+    </section>
+
+    <section id="sec-agentes">
+      <div class="eyebrow">04 · Implantação de agentes</div>
+      <h2>Do aprendizado para uma operação assistida por IA</h2>
+      <p>A implantação inicial considera um ciclo de 3 meses para estruturar agentes em ambiente próprio da NewPack, com canais, permissões, primeiros fluxos, skills e integrações possíveis.</p>
+      <div class="grid2">
+        <div class="card">
+          <span class="badge good">Entra no escopo</span>
+          <ul class="clean">
+            <li><span>implantação de ambiente Hermes/agentes em infraestrutura da NewPack;</span></li>
+            <li><span>apoio na definição de canal interno de operação;</span></li>
+            <li><span>organização de permissões, papéis e governança;</span></li>
+            <li><span>criação dos primeiros agentes e skills operacionais;</span></li>
+            <li><span>acompanhamento das primeiras integrações viáveis;</span></li>
+            <li><span>suporte prático do time de Paulo Jardim, incluindo Bruna.</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="badge warn">Premissas</span>
+          <ul class="clean">
+            <li><span>VPS, contas, tokens, licenças, acessos e domínios pertencem à NewPack;</span></li>
+            <li><span>integrações dependem de APIs, módulos, permissões e política de segurança;</span></li>
+            <li><span>automações sensíveis exigem validação humana no início;</span></li>
+            <li><span>o ciclo começa com poucos casos bem escolhidos, não com a empresa inteira.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-oportunidades">
+      <div class="eyebrow">05 · Oportunidades prioritárias</div>
+      <h2>Onde os primeiros agentes podem gerar mais valor</h2>
+      <div class="cards">
+        <div class="card"><span class="badge good">Prioridade 1</span><h3>Agente de Orçamentos e Oportunidades</h3><p>Lê editais, memoriais, anexos e escopos; extrai requisitos, riscos, lacunas, itens críticos, parceiros necessários e prioridade comercial.</p></div>
+        <div class="card"><span class="badge blue">Prioridade 2</span><h3>Agente de Diário de Obra / RDO</h3><p>Recebe áudio ou texto do responsável pela obra e estrutura atividades, efetivo, equipamentos, ocorrências, riscos e pendências.</p></div>
+        <div class="card"><span class="badge warn">Prioridade 3</span><h3>Agente de Suprimentos e Cotações</h3><p>Organiza cotações, compara fornecedores, monta mapa de compra, aponta divergências e sinaliza riscos de ruptura.</p></div>
+        <div class="card"><span class="badge">Evolução</span><h3>Controladoria e Gestão de Obras</h3><p>Consolida avanço, custos, pendências, compras, desvios e riscos em visão executiva para sócios e controladoria.</p></div>
+        <div class="card"><span class="badge">Evolução</span><h3>RH e Mobilização</h3><p>Apoia onboarding, dúvidas recorrentes, políticas internas e checklists de mobilização para equipes deslocadas.</p></div>
+      </div>
+    </section>
+
+    <section id="sec-integracoes">
+      <div class="eyebrow">06 · Sistemas e canais</div>
+      <h2>Integração precisa seguir viabilidade, segurança e valor operacional</h2>
+      <div class="grid3">
+        <div class="card"><h3>Sienge</h3><p>Base natural para obras, orçamento, planejamento, centro de custos, acompanhamento, diário de obra e anexos, conforme módulos, plano de API e permissões.</p></div>
+        <div class="card"><h3>RD Station</h3><p>Pode apoiar leitura de contatos, negociações, oportunidades e eventos comerciais, a depender do produto contratado e das APIs disponíveis.</p></div>
+        <div class="card"><h3>Canal interno</h3><p>Teams, Discord ou Slack podem funcionar como ambiente estruturado. O WhatsApp segue útil para urgência, mas não é ideal como núcleo de governança de agentes.</p></div>
+      </div>
+      <div class="callout blue">O problema não é o WhatsApp. O problema é tentar transformar dezenas de grupos de WhatsApp em sistema de gestão, histórico e operação assistida.</div>
+    </section>
+
+    <section id="sec-case">
+      <div class="eyebrow">07 · Referências práticas</div>
+      <h2>Metodologia validada em workshop e implantação real</h2>
+      <div class="grid2">
+        <div class="card">
+          <span class="badge good">Programa corporativo</span>
+          <h3>Grupo HP / Maas</h3>
+          <p>A estrutura de proposta segue o padrão de programa corporativo já utilizado com o Grupo HP/Maas: contexto, metodologia, trilhas, oportunidades, resultados esperados, premissas e próximos passos.</p>
+        </div>
+        <div class="card">
+          <span class="badge blue">Implantação real</span>
+          <h3>GSN Advogados</h3>
+          <p>Case derivado do Workshop SeuTimeIA Agentes: agente Hermes em ambiente isolado, VPS própria, Discord, segundo cérebro em GitHub, governança por papéis, Google Workspace, Drive, ClickUp e uso real sobre documentos e rotinas jurídicas.</p>
+        </div>
+      </div>
+      <div class="callout good">A leitura para a NewPack é direta: o workshop reduz a curva de explicação, e a implantação posterior começa mais próxima dos processos reais.</div>
+    </section>
+
+    <section id="sec-investimento">
+      <div class="eyebrow">08 · Investimento</div>
+      <h2>Escopo comercial proposto</h2>
+      <div class="grid3">
+        <div class="card">
+          <span class="badge good">Workshop presencial</span>
+          <div class="price">R$ 7.500</div>
+          <p class="price-sub">6 horas presenciais em Anápolis, para 25 a 30 pessoas, incluindo deslocamento de Paulo Jardim.</p>
+        </div>
+        <div class="card">
+          <span class="badge blue">Implantação após workshop</span>
+          <div class="price">R$ 6.000</div>
+          <p class="price-sub">ciclo de 3 meses de implantação assistida, com onboarding conceitual já acelerado pelo workshop.</p>
+        </div>
+        <div class="card">
+          <span class="badge warn">Implantação sem workshop</span>
+          <div class="price">R$ 8.000</div>
+          <p class="price-sub">ciclo de 3 meses, incorporando entendimento, alinhamento conceitual e preparação inicial.</p>
+        </div>
+      </div>
+      <div class="callout">Após os 3 meses, a NewPack pode seguir internamente ou contratar acompanhamento contínuo de manutenção, monitoramento e evolução por <b>R$ 500,00 por agente/mês</b>.</div>
+    </section>
+
+    <section id="sec-paulo">
+      <div class="eyebrow">09 · Paulo Jardim</div>
+      <h2>Experiência executiva, operação e aplicação prática de IA</h2>
+      <div class="grid2">
+        <div class="card">
+          <p><b>Paulo Jardim</b> conecta experiência em indústria, gestão, reestruturação e IA aplicada para ajudar empresas a transformar tecnologia em capacidade operacional real.</p>
+          <ul class="clean">
+            <li><span>Engenheiro pela UFG e formação em Gestão de Negócios pela FDC.</span></li>
+            <li><span>Experiência em Ambev, Unilever e Votorantim.</span></li>
+            <li><span>Atuação como CEO interino em reestruturações com mais de 100 colaboradores.</span></li>
+            <li><span>Criador do SeuTimeIA, mentor executivo e consultor estratégico de IA.</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="badge good">Diferencial</span>
+          <h3>Não é uma conversa de ferramenta</h3>
+          <p>A abordagem parte de problemas reais de operação, processos, pessoas e decisão. A tecnologia entra como meio para aumentar execução, padronização e aprendizagem institucional.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-passos">
+      <div class="eyebrow">10 · Próximos passos</div>
+      <h2>Decisões para avançar</h2>
+      <div class="flow">
+        <div class="node"><div class="idx">1</div><div><h3>Validar escopo do workshop</h3><p>Confirmar data, participantes, local, estrutura física e dinâmica de 6 horas.</p></div></div>
+        <div class="node"><div class="idx">2</div><div><h3>Confirmar formato do público</h3><p>Turma única neste primeiro momento ou separação posterior entre liderança e operação.</p></div></div>
+        <div class="node"><div class="idx">3</div><div><h3>Realizar o workshop</h3><p>Conduzir alinhamento, diagnóstico, demonstração de agentes e priorização dos primeiros casos.</p></div></div>
+        <div class="node"><div class="idx">4</div><div><h3>Escolher os primeiros agentes</h3><p>Recomendação inicial: orçamento/oportunidades, RDO e suprimentos.</p></div></div>
+        <div class="node"><div class="idx">5</div><div><h3>Iniciar implantação</h3><p>Validar ambiente, canal, acessos, permissões e começar o ciclo de 3 meses.</p></div></div>
+      </div>
+    </section>
+
+    <footer><p>Programa de IA Aplicada e Implantação de Agentes — NewPack · Paulo Jardim · SeuTimeIA</p></footer>
+  </main>
+</div>
+<script>
+  const links = [...document.querySelectorAll('#toc a, #mobile-nav a')];
+  const sections = [...new Set(links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean))];
+  const setActive = () => {
+    let current = sections[0];
+    for (const sec of sections) if (sec.getBoundingClientRect().top <= 120) current = sec;
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
+  };
+  document.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+</script>
+</body>
+</html>
