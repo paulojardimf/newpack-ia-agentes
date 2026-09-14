@@ -36,3 +36,11 @@ O objetivo é transformar conhecimento tácito dos sócios e líderes em ativo o
 ## Próxima etapa
 
 Depois da validação textual deste escopo, o próximo passo é gerar o HTML executivo com identidade visual no padrão Paulo Jardim + SeuTimeIA e publicar via GitHub Pages.
+
+## Referências verificadas nesta revisão
+
+- Proposta estratégica e comercial do Grupo HP/Maas no repositório `paulojardimf/grupo-hp-inovacao-ia`.
+- Documento canônico do segundo cérebro: `projects/active/projeto-sgi-operacao-ia/servico-implantacao-agentes-hermes.md`.
+- Case-base GSN Advogados: `projects/active/projeto-sgi-operacao-ia/case-gsn-advogados-implantacao-hermes.md`.
+
+Correção comercial aplicada: os valores de implantação de R$ 6.000 e R$ 8.000 são pelo ciclo de 3 meses, não mensalidade.

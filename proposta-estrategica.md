@@ -301,6 +301,26 @@ A decisão deve equilibrar adoção, segurança, custo e facilidade técnica.
 
 ---
 
+### Referência de implantação: GSN Advogados
+
+O modelo de implantação considerado nesta proposta utiliza como referência prática o case da GSN Advogados, primeiro caso real de implantação de agentes Hermes derivado do Workshop SeuTimeIA Agentes de junho/2026.
+
+Nesse case, a implantação evoluiu de um workshop para um ambiente real com:
+
+- VPS própria do cliente;
+- Discord como canal principal;
+- Hermes instalado e operando;
+- segundo cérebro em GitHub;
+- governança por papéis;
+- integração com Google Workspace;
+- uso real com Google Drive e ClickUp;
+- criação e refinamento de skills;
+- acompanhamento operacional com participação da Bruna Mohn.
+
+A leitura aplicada à NewPack é direta: workshop reduz curva de explicação e permite que a implantação comece mais próxima dos processos reais, não da evangelização conceitual.
+
+---
+
 ## 9. Projeto de implantação inicial de agentes
 
 Após o workshop, a proposta é estruturar um projeto de implantação com duração inicial de **3 meses**.

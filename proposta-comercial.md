@@ -90,13 +90,13 @@ Recomendação: sempre que viável, realizar fora do ambiente normal de trabalho
 
 ### Condição com workshop realizado
 
-**R$ 6.000,00 por mês, durante 3 meses**
+**R$ 6.000,00 pelo ciclo de 3 meses**
 
 Condição aplicável quando a implantação é contratada após a realização do workshop inicial, pois parte importante do onboarding, nivelamento e entendimento dos processos já terá sido trabalhada com o time.
 
 ### Condição sem workshop prévio
 
-**R$ 8.000,00 por mês, durante 3 meses**
+**R$ 8.000,00 pelo ciclo de 3 meses**
 
 Neste cenário, o projeto precisa absorver também a etapa de entendimento, alinhamento conceitual, onboarding dos envolvidos e preparação de repertório que normalmente seria acelerada pelo workshop.
 
